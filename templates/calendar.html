@@ -18,6 +18,7 @@
             transition: background 0.5s;
         }
         #calendar {
+            color: #0D6EFD;
             background-color: white;
             border-radius: 10px;
             padding: 10px;
@@ -82,7 +83,12 @@
             const calendarEl = document.getElementById('calendar');
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                events: '/get_leaves'
+                events: '/get_leaves',
+                headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: ''  // You can add other buttons like 'dayGridWeek' here if needed
+            },
             });
             calendar.render();
 
@@ -105,10 +111,10 @@
             data.forEach(e => {
                 leaveCounts[e.title] = (leaveCounts[e.title] || 0) + 1;
             });
-            const longLeave = Object.entries(leaveCounts).find(([name, count]) => count >= 5);
+            const longLeave = Object.entries(leaveCounts).find(([name, count]) => count >= 2);
             if (longLeave) {
                 const banner = document.getElementById('long-leave-banner');
-                banner.innerText = `🔔 ${longLeave[0]} has 5+ upcoming leaves!`;
+                banner.innerText = `😂😂 ${longLeave[0]} has 2+ upcoming leaves!`;
                 banner.classList.remove('d-none');
             }
         });
