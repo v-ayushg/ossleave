@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leave Tracker - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #a18cd1, #fbc2eb);
+            color: white;
+            min-height: 100vh;
+        }
+        .card {
+            background-color: rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-4">🚀 OSS Leave Tracker</h1>
+        <div class="card p-4 shadow">
+            <h4 class="mb-3">📅 Who is on Leave Today ({{ today_leaves|length }})</h4>
+            <ul class="list-group">
+                {% for person in today_leaves %}
+                <li class="list-group-item bg-transparent text-white border-white">{{ person.name }}</li>
+                {% else %}
+                <li class="list-group-item bg-transparent text-white border-white">🎉 No one is on leave today!</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="text-center mt-4">
+            <a href="/calendar" class="btn btn-light">Go to Full Calendar</a>
+        </div>
+    </div>
+</body>
+</html>
