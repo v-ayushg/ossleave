@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 import json
 from datetime import datetime
+import csv
+from io import StringIO
+from flask import Response
 
 app = Flask(__name__)
 
@@ -11,7 +14,7 @@ members = [
     "v-chintreddy", "v-dvengala", "v-dgadave", "v-gdiwakar", "v-krutwik", "v-kotasatya",
     "v-krshinde", "v-mgire", "v-nrenuka", "v-nisbhavsar", "v-deshmukhp", "v-pthengane",
     "v-yadavprade", "v-ragaikwad", "v-rashmsingh", "v-saurabhv", "v-snambissan",
-    "v-shwetabais", "v-sshelke", "v-trunwal", "v-ubhuvibhar"
+    "v-shwetabais", "v-sshelke", "v-trunwal", "v-ubhuvibhar", "v-anibasu"
 ]
 
 @app.route('/')
@@ -75,6 +78,32 @@ def delete_leave():
         return jsonify({"status": "deleted"})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+
+
+@app.route('/export_csv')
+def export_csv():
+    try:
+        with open(DATA_FILE, 'r') as f:
+            records = json.load(f)
+
+        output = StringIO()
+        writer = csv.writer(output)
+        writer.writerow(['Name', 'Date'])  # CSV headers
+
+        for r in records:
+            writer.writerow([r['name'], r['date']])
+
+        output.seek(0)
+
+        return Response(
+            output,
+            mimetype="text/csv",
+            headers={"Content-Disposition": "attachment;filename=leaves.csv"}
+        )
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
